@@ -22,9 +22,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.linesOf;
 
 public class CatalogueSteps implements En {
 
-    private final ScenarioContext context;
-    private final CatalogueClient client;
-
     private boolean isUuid(String id) {
         try {
             UUID.fromString(id);
@@ -35,9 +32,6 @@ public class CatalogueSteps implements En {
     }
 
     public CatalogueSteps(ScenarioContext context, CatalogueClient client) {
-        this.context = context;
-        this.client = client;
-
 
         Given("the catalogue does not contain our products", () -> {
             var response = client.listProducts();
