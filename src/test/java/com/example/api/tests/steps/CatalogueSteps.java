@@ -10,6 +10,7 @@ import io.cucumber.java8.En;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,25 +66,12 @@ public class CatalogueSteps implements En {
         });
 
         When("a product named {string} is added to the catalogue", (String name) -> {
-            Response response =
-                    given()
-                            .contentType("application/json")
-                            .body("""
-                                    { "name": "%s" }
-                                    """.formatted(name))
-                            .when()
-                            .post("/objects");
+            Response response = client.addProduct(name);
 
-            var proudctId = response.getBody().jsonPath().get("id");
+
 
             context.record(response);
 
-            Response catalogueResponse =
-                    given()
-                            .when()
-                            .get("/objects?id=" + proudctId);
-
-            context.record(catalogueResponse);
         });
 
         When("the catalogue is asked for a product identified by {string}", (String id) -> {
@@ -107,15 +95,17 @@ public class CatalogueSteps implements En {
         });
 
         Then("the catalogue listing for that product should contain the following:", (DataTable table) -> {
+            var productId = context.lastResponse().orElseThrow().getBody().as(Product.class).id();
+
+            Response listing = client.listProductByIds(List.of(productId));
+
             var expected =
                     table.rows(1)
                             .asList(String.class)
                             .stream()
                             .toList();
 
-            var actual =
-                    context.lastResponse()
-                            .orElseThrow()
+            var actual = listing
                             .jsonPath()
                             .getList("$", Product.class)
                             .stream()
