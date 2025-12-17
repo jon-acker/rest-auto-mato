@@ -6,5 +6,5 @@
 
 ### Run tests:
 
-```mvn clean verify```
+```mvn clean test```
 
