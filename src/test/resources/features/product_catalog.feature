@@ -8,6 +8,20 @@ Background:
       | name                 |
       | Apple MacBook Pro 16 |
 
+  Scenario: Listing multiple products in the catalogue
+    Given the product "Samsung Galaxy S21" was added to the catalogue
+    And the product "Google Pixel 6" was added to the catalogue
+    When a catalogue request to list both products is made
+    Then the catalogue listing should contain the following:
+      | name                 |
+      | Samsung Galaxy S21   |
+      | Google Pixel 6       |
+
+  Scenario: Removing a product from the catalogue
+    Given the product "Dell XPS 13" was added to the catalogue
+    When the product "Dell XPS 13" is removed from the catalogue
+    Then the catalogue listing should not contain the product "Dell XPS 13"
+
   Scenario: Attempting to access a product that is not in the catalogue
     When the catalogue is asked for a product identified by "does-not-exist"
     Then the catalogue indicates the product is not found

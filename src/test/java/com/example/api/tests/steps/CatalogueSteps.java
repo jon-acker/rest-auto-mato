@@ -4,20 +4,18 @@ import com.example.api.tests.context.CatalogueClient;
 import com.example.api.tests.context.Product;
 import com.example.api.tests.context.ScenarioContext;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java8.PendingException;
 import io.restassured.response.Response;
 import io.cucumber.java8.En;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.linesOf;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 
 
 public class CatalogueSteps implements En {
@@ -122,6 +120,48 @@ public class CatalogueSteps implements En {
                             .statusCode();
 
             assertThat(status).isEqualTo(400);
+        });
+
+        Given("the product {string} was added to the catalogue", (String name)  -> {
+            var response = client.addProduct(name);
+
+            context.record(response);
+        });
+
+        When("the product {string} is removed from the catalogue", (String name) -> {
+            client.deleteProduct(context.lastProductIds().get(0));
+        });
+
+        Then("the catalogue listing should not contain the product {string}", (String id) -> {
+            client.listProductByIds(context.lastProductIds())
+                    .then()
+                    .assertThat()
+                    .body("", hasSize(0));
+        });
+
+        When("a catalogue request to list both products is made", () -> {
+            var response = client.listProductByIds(context.lastProductIds());
+
+            context.record(response);
+        });
+
+        Then("the catalogue listing should contain the following:", (DataTable table) -> {
+            var expected =
+                    table.rows(1)
+                            .asList(String.class)
+                            .stream()
+                            .toList();
+
+            var actual = context.lastResponse().orElseThrow()
+                    .jsonPath()
+                    .getList("$", Product.class)
+                    .stream()
+                    .map(Product::name)
+                    .toList();
+
+            assertThat(actual).isEqualTo(expected);
+
+
         });
     }
 

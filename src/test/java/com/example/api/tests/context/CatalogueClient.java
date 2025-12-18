@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,6 +13,11 @@ import static io.restassured.RestAssured.given;
 
 @Component
 public class CatalogueClient {
+    private final ScenarioContext context;
+
+    public CatalogueClient(ScenarioContext context) {
+        this.context = context;
+    }
 
     public Response listProducts() {
         return given()
@@ -35,9 +41,14 @@ public class CatalogueClient {
     }
 
     public Response addProduct(String name) {
-        return given()
+        var response = given()
                 .contentType(ContentType.JSON)
                 .body("{ \"name\": \"%s\" }".formatted(name))
                 .post("/objects");
+
+        //keep track of the product ids added
+        context.recordProductId(response);
+
+        return response;
     }
 }
