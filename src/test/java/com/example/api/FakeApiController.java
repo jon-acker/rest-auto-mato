@@ -1,4 +1,4 @@
-package org.example.api;
+package com.example.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/objects")
 public class FakeApiController {
 
-    private final Map<String, Map<String,Object>> db = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, Object>> db = new ConcurrentHashMap<>();
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Map<String,Object> body) {
+    public ResponseEntity<?> add(@RequestBody Map<String, Object> body) {
         if (!body.containsKey("name")) {
             return ResponseEntity.badRequest().build();
         }
@@ -23,15 +23,15 @@ public class FakeApiController {
     }
 
     @GetMapping
-    public List<Map<String,Object>> list(@RequestParam(required = false) List<String> id) {
-        if (id != null) {
-            return id.stream().map(db::get).filter(Objects::nonNull).toList();
+    public List<Map<String, Object>> list(@RequestParam(name = "id", required = false) List<String> ids) {
+        if (ids != null) {
+            return ids.stream().map(db::get).filter(Objects::nonNull).toList();
         }
         return new ArrayList<>(db.values());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable String id) {
+    public ResponseEntity<?> get(@PathVariable(name = "id") String id) {
         return Optional.ofNullable(db.get(id))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

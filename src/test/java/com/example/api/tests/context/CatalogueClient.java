@@ -1,5 +1,6 @@
 package com.example.api.tests.context;
 
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class CatalogueClient {
 
     public Response listProducts() {
         return given()
+                .accept(ContentType.JSON)
                 .when()
                 .get("/objects");
     }
@@ -34,7 +36,7 @@ public class CatalogueClient {
 
     public Response addProduct(String name) {
         return given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("{ \"name\": \"%s\" }".formatted(name))
                 .post("/objects");
     }

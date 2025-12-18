@@ -62,10 +62,7 @@ public class CatalogueSteps implements En {
         When("a product named {string} is added to the catalogue", (String name) -> {
             Response response = client.addProduct(name);
 
-
-
             context.record(response);
-
         });
 
         When("the catalogue is asked for a product identified by {string}", (String id) -> {

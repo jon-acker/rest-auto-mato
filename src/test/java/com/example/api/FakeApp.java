@@ -1,11 +1,7 @@
-package org.example.api;
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+package com.example.api;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-public class Main {
-
-}
+public class FakeApp { }
