@@ -1,11 +1,7 @@
 package com.example.api.tests.steps;
 
-import com.example.api.tests.context.ScenarioContext;
 import io.cucumber.java8.En;
 import io.restassured.RestAssured;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import org.apache.http.params.CoreConnectionPNames;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.config.HttpClientConfig.httpClientConfig;
@@ -20,8 +16,8 @@ public class Hooks implements En {
             // set a timeout for restassured requests
             RestAssured.config = config()
                     .httpClient(httpClientConfig()
-                            .setParam(CONNECTION_TIMEOUT, 2000)
-                            .setParam(SO_TIMEOUT, 2000)
+                            .setParam(CONNECTION_TIMEOUT, 5000)
+                            .setParam(SO_TIMEOUT, 5000)
                     );
 
             baseURI = System.getProperty(

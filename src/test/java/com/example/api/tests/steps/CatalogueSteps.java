@@ -4,7 +4,6 @@ import com.example.api.tests.context.CatalogueClient;
 import com.example.api.tests.context.Product;
 import com.example.api.tests.context.ScenarioContext;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java8.PendingException;
 import io.restassured.response.Response;
 import io.cucumber.java8.En;
 
@@ -13,8 +12,6 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.linesOf;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 
 
