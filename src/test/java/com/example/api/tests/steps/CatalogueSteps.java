@@ -34,6 +34,7 @@ public class CatalogueSteps implements En {
         Given("the catalogue does not contain our products", () -> {
             var response = client.listProducts();
 
+            // remove only product ids that are valid UUIDs (ours)
             response.jsonPath()
                     .getList("$", Product.class)
                     .stream()
@@ -160,8 +161,6 @@ public class CatalogueSteps implements En {
                     .toList();
 
             assertThat(actual).isEqualTo(expected);
-
-
         });
     }
 
