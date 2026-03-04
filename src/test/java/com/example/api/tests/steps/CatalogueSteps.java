@@ -1,8 +1,8 @@
 package com.example.api.tests.steps;
 
 import com.example.api.tests.context.CatalogueClient;
-import com.example.api.tests.context.Product;
 import com.example.api.tests.context.ScenarioContext;
+import org.example.api.Product;
 import io.cucumber.datatable.DataTable;
 import io.restassured.response.Response;
 import io.cucumber.java8.En;

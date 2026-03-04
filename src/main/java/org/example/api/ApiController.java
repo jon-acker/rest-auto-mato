@@ -50,18 +50,14 @@ public class ApiController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateName(@PathVariable(name = "id") String id,
-                                        @RequestBody Map<String, Object> body) {
-        if (!body.containsKey("name")) {
-            return ResponseEntity.badRequest().build();
-        }
-
+                                        @RequestBody Product body) {
         Map<String, Object> existing = db.get(id);
         if (existing == null) {
             return notFound().build();
         }
 
         Map<String, Object> updated = new HashMap<>(existing);
-        updated.put("name", body.get("name"));
+        updated.put("name", body.name());
         db.put(id, updated);
         return ResponseEntity.ok(updated);
     }
