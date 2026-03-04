@@ -143,6 +143,12 @@ public class CatalogueSteps implements En {
             context.record(response);
         });
 
+        When("the product name is updated to {string}", (String updatedName) -> {
+            String id = context.lastProductIds().get(0);
+            Response response = client.updateProductName(id, updatedName);
+            context.record(response);
+        });
+
         Then("the catalogue listing should contain the following:", (DataTable table) -> {
             var expected =
                     table.rows(1)

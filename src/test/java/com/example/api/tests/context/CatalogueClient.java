@@ -49,4 +49,11 @@ public class CatalogueClient {
 
         return response;
     }
+
+    public Response updateProductName(String id, String name) {
+        return given()
+                .contentType(ContentType.JSON)
+                .body("{ \"name\": \"%s\" }".formatted(name))
+                .patch("/objects/{id}", id);
+    }
 }

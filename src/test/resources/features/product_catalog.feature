@@ -22,6 +22,13 @@ Background:
     When the product "Dell XPS 13" is removed from the catalogue
     Then the catalogue listing should not contain the product "Dell XPS 13"
 
+  Scenario: Updating a product name in the catalogue
+    Given the product "iPhone 14" was added to the catalogue
+    When the product name is updated to "iPhone 14 Pro"
+    Then the catalogue listing for that product should contain the following:
+      | name          |
+      | iPhone 14 Pro |
+
   Scenario: Attempting to access a product that is not in the catalogue
     When the catalogue is asked for a product identified by "does-not-exist"
     Then the catalogue indicates the product is not found
