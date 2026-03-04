@@ -1,4 +1,4 @@
-package com.example.api;
+package org.example.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
 @RequestMapping("/objects")
-public class FakeApiController {
+public class ApiController {
 
     private final Map<String, Map<String, Object>> db = new ConcurrentHashMap<>();
 
