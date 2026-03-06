@@ -1,4 +1,4 @@
-package org.example.api;
+package org.example.catalogue.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
