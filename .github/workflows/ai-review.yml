@@ -34,11 +34,15 @@ jobs:
           FILES_CONTENT=$(cat pr.files)
 
           if [ ${#DIFF_CONTENT} -gt "$MAX_DIFF_CHARS" ]; then
-            DIFF_CONTENT="${DIFF_CONTENT:0:$MAX_DIFF_CHARS}
+            DIFF_CONTENT="${DIFF_CONTENT:0:$MAX_DIFF_CHARS}"
+            DIFF_CONTENT="$DIFF_CONTENT
+... [diff truncated]"
           fi
 
           if [ ${#FILES_CONTENT} -gt "$MAX_FILES_CHARS" ]; then
-            FILES_CONTENT="${FILES_CONTENT:0:$MAX_FILES_CHARS}
+            FILES_CONTENT="${FILES_CONTENT:0:$MAX_FILES_CHARS}"
+            FILES_CONTENT="$FILES_CONTENT
+... [file list truncated]"
           fi
 
           {
