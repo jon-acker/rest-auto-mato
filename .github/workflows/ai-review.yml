@@ -71,7 +71,7 @@ jobs:
             exit 0
           fi
 
-          MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
+          MODEL="${OPENAI_MODEL:-gpt-5.1}"
 
           PROMPT=$(cat <<'EOF'
             You are an autonomous pull request review agent.
