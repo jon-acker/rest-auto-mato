@@ -86,7 +86,8 @@ jobs:
           EOF
           )
 
-          INPUT_TEXT="$PROMPT
+          INPUT_TEXT=$(cat <<'EOF'
+$PROMPT
 
 PR title: $PR_TITLE
 PR number: #$PR_NUMBER
@@ -95,7 +96,9 @@ Changed files:
 $PR_FILES
 
 Patch:
-$PR_DIFF"
+$PR_DIFF
+EOF
+          )
 
           REQUEST_JSON=$(jq -n \
             --arg model "$MODEL" \
