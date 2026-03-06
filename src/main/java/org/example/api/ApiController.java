@@ -1,65 +1,59 @@
 package org.example.api;
 
 import jakarta.validation.Valid;
+import org.example.catalogue.domain.Catalogue;
+import org.example.catalogue.domain.Product;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
+import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/objects")
 public class ApiController {
 
-    private final Map<String, Map<String, Object>> db = new ConcurrentHashMap<>();
+    private final Catalogue catalogue;
+
+    public ApiController(Catalogue catalogue) {
+        this.catalogue = catalogue;
+    }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Map<String, Object> body) {
-        if (!body.containsKey("name")) {
-            return ResponseEntity.badRequest().build();
-        }
-        String id = UUID.randomUUID().toString();
-        db.put(id, Map.of("id", id, "name", body.get("name"), "createdAt", Date.from(Instant.now()), "data", Map.of()));
-        return ResponseEntity.status(201).body(db.get(id));
+    @ResponseStatus(HttpStatus.CREATED)
+    @BadRequestOnEmpty
+    public Optional<Product> add(@Valid @RequestBody ProductNameRequest body) {
+        return catalogue.add(body.name());
     }
 
     @GetMapping
-    public List<Map<String, Object>> list(@RequestParam(name = "id", required = false) List<String> ids) throws InterruptedException {
-        if (ids != null) {
-            return ids.stream().map(db::get).filter(Objects::nonNull).toList();
-        }
-        return new ArrayList<>(db.values());
+    public List<Product> list(@RequestParam(name = "id", required = false) List<String> ids) {
+        return (ids != null) ?
+                catalogue.listByIds(ids):
+                catalogue.list();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable(name = "id") String id) {
-        return Optional.ofNullable(db.get(id))
-                .map(ResponseEntity::ok)
-                .orElse(notFound().build());
+    @NotFoundOnEmpty
+    public Optional<Product> get(@PathVariable(name = "id") String id) {
+        return catalogue.get(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") String id) {
-        return (db.remove(id) != null) ?
-                noContent().build() :
-                notFound().build();
+        return switch (catalogue.delete(id)) {
+            case DELETED -> noContent().build();
+            case NOT_FOUND -> notFound().build();
+        };
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateName(@PathVariable(name = "id") String id,
-                                        @Valid @RequestBody Product body) {
-        Map<String, Object> existing = db.get(id);
-        if (existing == null) {
-            return notFound().build();
-        }
-
-        Map<String, Object> updated = new HashMap<>(existing);
-        updated.put("name", body.name());
-        db.put(id, updated);
-        return ResponseEntity.ok(updated);
+    @NotFoundOnEmpty
+    public Optional<Product> updateName(@PathVariable(name = "id") String id,
+                                        @Valid @RequestBody ProductNameRequest body) {
+        return catalogue.updateName(id, body.name());
     }
 }

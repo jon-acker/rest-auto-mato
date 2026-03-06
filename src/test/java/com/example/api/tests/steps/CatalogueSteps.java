@@ -2,7 +2,7 @@ package com.example.api.tests.steps;
 
 import com.example.api.tests.context.CatalogueClient;
 import com.example.api.tests.context.ScenarioContext;
-import org.example.api.Product;
+import org.example.catalogue.domain.Product;
 import io.cucumber.datatable.DataTable;
 import io.restassured.response.Response;
 import io.cucumber.java8.En;
@@ -116,6 +116,14 @@ public class CatalogueSteps implements En {
                     context.lastResponse()
                             .orElseThrow()
                             .statusCode();
+
+            assertThat(status).isEqualTo(400);
+        });
+
+        Then("the catalogue indicates the request cannot be fulfilled because name exists", () -> {
+            int status = context.lastResponse()
+                    .orElseThrow()
+                    .statusCode();
 
             assertThat(status).isEqualTo(400);
         });

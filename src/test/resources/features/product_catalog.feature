@@ -33,6 +33,11 @@ Background:
     When the catalogue is asked for a product identified by "does-not-exist"
     Then the catalogue indicates the product is not found
 
+  Scenario: Attempting to add a product has exactly the same name
+    Given the product "Dell XPS 13" was added to the catalogue
+    When a product named "Dell XPS 13" is added to the catalogue
+    Then the catalogue indicates the request cannot be fulfilled because name exists
+
   Scenario: Adding a malformed product to the catalogue
     When a product is added with malformed data
     Then the catalogue should reject it
