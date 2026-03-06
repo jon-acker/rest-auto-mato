@@ -86,19 +86,16 @@ jobs:
           EOF
           )
 
-          INPUT_TEXT=$(cat <<'EOF'
-            $PROMPT
+          INPUT_TEXT="$PROMPT
 
-            PR title: $PR_TITLE
-            PR number: #$PR_NUMBER
-
-            Changed files:
-            $PR_FILES
-
-            Patch:
-            $PR_DIFF
-          EOF
-          )
+          PR title: $PR_TITLE
+          PR number: #$PR_NUMBER
+          
+          Changed files:
+          $PR_FILES
+          
+          Patch:
+          $PR_DIFF"
 
           REQUEST_JSON=$(jq -n \
             --arg model "$MODEL" \
