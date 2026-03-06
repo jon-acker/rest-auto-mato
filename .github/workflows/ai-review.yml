@@ -35,12 +35,10 @@ jobs:
 
           if [ ${#DIFF_CONTENT} -gt "$MAX_DIFF_CHARS" ]; then
             DIFF_CONTENT="${DIFF_CONTENT:0:$MAX_DIFF_CHARS}
-... [diff truncated]"
           fi
 
           if [ ${#FILES_CONTENT} -gt "$MAX_FILES_CHARS" ]; then
             FILES_CONTENT="${FILES_CONTENT:0:$MAX_FILES_CHARS}
-... [file list truncated]"
           fi
 
           {
