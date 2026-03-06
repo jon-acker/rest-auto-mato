@@ -87,17 +87,17 @@ jobs:
           )
 
           INPUT_TEXT=$(cat <<'EOF'
-$PROMPT
+            $PROMPT
 
-PR title: $PR_TITLE
-PR number: #$PR_NUMBER
+            PR title: $PR_TITLE
+            PR number: #$PR_NUMBER
 
-Changed files:
-$PR_FILES
+            Changed files:
+            $PR_FILES
 
-Patch:
-$PR_DIFF
-EOF
+            Patch:
+            $PR_DIFF
+          EOF
           )
 
           REQUEST_JSON=$(jq -n \
