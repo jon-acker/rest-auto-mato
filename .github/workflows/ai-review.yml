@@ -74,17 +74,17 @@ jobs:
           MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
 
           PROMPT=$(cat <<'EOF'
-You are an autonomous pull request review agent.
-Review the PR patch and list only actionable issues.
+            You are an autonomous pull request review agent.
+            Review the PR patch and list only actionable issues.
 
-Output rules:
-1) If there are no actionable findings, output exactly: lgtm
-2) Otherwise, output:
-   - First line: needs_changes
-   - Then bullets with severity labels [high|medium|low], file path, and a short fix suggestion.
-3) Do not include any text before the first line.
-EOF
-)
+            Output rules:
+            1) If there are no actionable findings, output exactly: lgtm
+            2) Otherwise, output:
+               - First line: needs_changes
+               - Then bullets with severity labels [high|medium|low], file path, and a short fix suggestion.
+            3) Do not include any text before the first line.
+          EOF
+          )
 
           INPUT_TEXT="$PROMPT
 
