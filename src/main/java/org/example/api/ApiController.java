@@ -6,6 +6,7 @@ import org.example.catalogue.domain.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,9 @@ public class ApiController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @BadRequestOnEmpty
-    public Optional<Product> add(@Valid @RequestBody ProductNameRequest body) {
-        return catalogue.add(body.name());
+    public Product add(@Valid @RequestBody ProductNameRequest body) {
+        return catalogue.add(body.name())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "duplicate product name"));
     }
 
     @GetMapping
