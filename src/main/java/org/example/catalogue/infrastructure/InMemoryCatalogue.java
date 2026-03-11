@@ -28,7 +28,7 @@ public class InMemoryCatalogue implements Catalogue {
         }
 
         String id = UUID.randomUUID().toString();
-        Product product = new Product(id, name, Date.from(Instant.now()), Map.of());
+        Product product = new Product(id, name, Date.from(Instant.now()), null, Map.of());
         db.put(id, product);
         return Optional.of(product);
     }
@@ -60,7 +60,7 @@ public class InMemoryCatalogue implements Catalogue {
             return Optional.empty();
         }
 
-        Product updated = new Product(existing.id(), newName, existing.createdAt(), existing.data());
+        Product updated = new Product(existing.id(), newName, existing.createdAt(), Date.from(Instant.now()), existing.data());
         db.put(id, updated);
         return Optional.of(updated);
     }

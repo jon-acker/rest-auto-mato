@@ -1,12 +1,12 @@
 package com.example.api.tests;
 
 import io.cucumber.spring.CucumberContextConfiguration;
-import org.springframework.test.context.ContextConfiguration;
+import org.example.App;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @CucumberContextConfiguration
-@ContextConfiguration(classes = TestConfig.class)
-//@SpringBootTest(
-//        classes = FakeApp.class,
-//        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
-//)
+@SpringBootTest(
+        classes = {App.class, TestConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
+)
 public class CucumberSpringConfiguration { }
